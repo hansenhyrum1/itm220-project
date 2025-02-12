@@ -1,6 +1,0 @@
-How to use GIT version control
-
-git checkout [branch name]
-git add .
-git commit -m "message"
-git push origin [branch name]
