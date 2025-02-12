@@ -1,0 +1,15 @@
+How to use GIT version control
+Always push your files to your branch, the following commands show how to add all changes to your push and how to send them to GitHub.
+
+
+git checkout [branch name]
+git add .
+git commit -m "message"
+git push
+
+When you log on again and go to pull the changes made, you must move to the main branch to pull the changes.
+
+git checkout main
+git pull
+
+Don't forget to change back to your branch to push changes you have made.
