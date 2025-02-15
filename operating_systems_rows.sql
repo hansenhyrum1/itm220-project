@@ -117,7 +117,24 @@ VALUES
 
 COMMIT;
 
--- 8. company -----------------------------------------------------------------
+-- 8. order ------------------------------------------------------------------
+START TRANSACTION;
+
+SAVEPOINT order1;
+
+INSERT INTO orders 
+(cost, order_date)
+VALUES
+(25.5, "2023-04-12"),
+(30, "2023-04-20"),
+(40, "2023-04-24"),
+(50, "2024-05-10"),
+(10, "2024-05-14"),
+(14.5, "2024-08-12");
+
+COMMIT;
+
+-- 9. company -----------------------------------------------------------------
 START TRANSACTION;
 
 SAVEPOINT company1;
@@ -132,7 +149,7 @@ VALUES
 
 COMMIT;
 
--- 9. min_cpu --------------------------------------------------------------------------------
+-- 10. min_cpu --------------------------------------------------------------------------------
 START TRANSACTION;
 
 SAVEPOINT min_cpu1;
@@ -148,7 +165,7 @@ VALUES
 
 COMMIT;
 
--- 10. min_gpu -------------------------------------------------------------
+-- 11. min_gpu -------------------------------------------------------------
 START TRANSACTION;
 
 SAVEPOINT gpu1;
@@ -165,7 +182,7 @@ VALUES
  
 COMMIT;
 
--- 11. credit_card ---------------------------------------------------------
+-- 12. credit_card ---------------------------------------------------------
 START TRANSACTION;
 
 SAVEPOINT credit_card1;
@@ -182,7 +199,24 @@ VALUES
 
 COMMIT;
 
--- 12. required_specs -------------------------------------------------------------------------------------------------------
+-- 13. customer--------------------------------------------------------------
+START TRANSACTION;
+
+SAVEPOINT customer1;
+
+INSERT INTO customer
+(first_name, last_name, credit_card_id)
+VALUES
+('Tam', 'Tran', (SELECT credit_card_id FROM credit_card WHERE card_number = '2378658490101234')),
+('Andrew', 'Benge',(SELECT credit_card_id FROM credit_card WHERE card_number = '1458854124070007')),
+('Hyrum', 'Hansen', (SELECT credit_card_id FROM credit_card WHERE card_number = '1987638761776123')),
+('Cashton', 'Bone', (SELECT credit_card_id FROM credit_card WHERE card_number = '4524031122347685')),
+('Zach', 'Pinney', (SELECT credit_card_id FROM credit_card WHERE card_number = '4578443310293853')),
+('Aaron', 'Quick', (SELECT credit_card_id FROM credit_card WHERE card_number = '1358269895312840'));
+
+COMMIT;
+
+-- 14. required_specs -------------------------------------------------------------------------------------------------------
 START TRANSACTION;
 
 SAVEPOINT required_specs1;
@@ -192,7 +226,7 @@ INSERT INTO required_specs
 VALUES
 -- Windows 11 Pro (Requires 2 Cores, 4GB DDR4, 64GB Storage, DirectX 12 GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 2 AND speed = 1.0 AND architecture = (SELECT architecture_id FROM architecture 
+	WHERE num_cores = 2 AND speed = 1.0 AND architecture_id = (SELECT architecture_id FROM architecture 
 		WHERE architecture_type = 'x86')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 4 AND ram_type = 'DDR4'),
@@ -204,7 +238,7 @@ VALUES
 
 -- Windows 10 Pro (Requires 1 Core, 2GB DDR3, 20GB Storage, DirectX 9 GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 1 AND speed = 1.0 AND architecture = (SELECT architecture_id FROM architecture 
+	WHERE num_cores = 1 AND speed = 1.0 AND architecture_id = (SELECT architecture_id FROM architecture 
 		WHERE architecture_type = 'x86')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 2 AND ram_type = 'DDR3'),
@@ -216,8 +250,8 @@ VALUES
 
 -- macOS Sonoma (Requires 8 Cores, 4GB LPDDR4, 25GB Storage, Apple M2 GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 8 AND speed = 3.2 AND architecture = (SELECT architecture_id FROM architecture 
-		WHERE architecture_type = 'ARM64')),
+	WHERE num_cores = 8 AND speed = 3.2 AND architecture_id = (SELECT architecture_id FROM architecture 
+		WHERE architecture_type = 'ARM')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 4 AND ram_type = 'LPDDR4/DDR4'),
  (SELECT min_storage_id FROM min_storage 
@@ -228,7 +262,7 @@ VALUES
 
 -- Ubuntu (Requires 2 Cores, 2GB DDR3, 25GB Storage, 3D Acceleration GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 2 AND speed = 2.0 AND architecture = (SELECT architecture_id FROM architecture 
+	WHERE num_cores = 2 AND speed = 2.0 AND architecture_id = (SELECT architecture_id FROM architecture 
 		WHERE architecture_type = 'x86')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 2 AND ram_type = 'DDR3'),
@@ -240,7 +274,7 @@ VALUES
 
 -- ChromeOS (Requires 2 Cores, 2GB LPDDR3, 16GB Storage, OpenGL 3.0 GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 2 AND speed = 1.1 AND architecture = (SELECT architecture_id FROM architecture 
+	WHERE num_cores = 2 AND speed = 1.1 AND architecture_id = (SELECT architecture_id FROM architecture 
 		WHERE architecture_type = 'x86')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 2 AND ram_type = 'LPDDR3/DDR3'),
@@ -252,7 +286,7 @@ VALUES
 
 COMMIT;
 
--- 13. operating_system ----------------------------------------------------------------------------
+-- 15. operating_system ----------------------------------------------------------------------------
 START TRANSACTION;
 
 SAVEPOINT operating_system1;
@@ -344,6 +378,40 @@ VALUES
 				WHERE gpu_architecture_type = "2010 or Newer")),
     (SELECT kernel_id FROM kernel WHERE kernel = "Linux Kernel"), 
     (SELECT company_id FROM company WHERE company_name = "Google"));
+
+COMMIT;
+
+-- 16. os_order_customer ------------------------------------------------------------------
+START TRANSACTION;
+
+SAVEPOINT os_order_customer1;
+
+INSERT INTO os_order_customer
+(os_id, order_id, customer_id)
+VALUES
+((SELECT os_id FROM operating_system WHERE os_name = 'Windows 11 Pro'), 
+(SELECT order_id FROM orders WHERE cost = '25.5'), 
+(SELECT customer_id FROM customer WHERE first_name = 'Tam')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'Ubuntu'),
+(SELECT order_id FROM orders WHERE cost = '30'),
+(SELECT customer_id FROM customer WHERE first_name = 'Andrew')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'macOS Ventura'),
+(SELECT order_id FROM orders WHERE cost = '40'),
+(SELECT customer_id FROM customer WHERE first_name = 'Hyrum')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'Window 10 Pro'),
+(SELECT order_id FROM orders WHERE cost = '50'),
+(SELECT customer_id FROM customer WHERE first_name = 'Cashton')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'macOS Soroma'),
+(SELECT order_id FROM orders WHERE cost = '10'),
+(SELECT customer_id FROM customer WHERE first_name = 'Zach')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'ChromeOS'),
+(SELECT order_id FROM orders WHERE cost = '14.5'),
+(SELECT customer_id FROM customer WHERE first_name = 'Aaron'));
 
 COMMIT;
 
