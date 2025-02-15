@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `operating_system`.`operating_system` (
   `os_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `os_name` VARCHAR(45) NOT NULL,
   `release_date` DATE NOT NULL,
-  `version` DATE NOT NULL,
+  `version` VARCHAR(45) NOT NULL,
   `cost` FLOAT NOT NULL,
   `required_specs_id` INT UNSIGNED NOT NULL,
   `kernel_id` INT UNSIGNED NOT NULL,
@@ -277,14 +277,14 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `operating_system`.`order`
+-- Table `operating_system`.`orders`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `operating_system`.`order` ;
+DROP TABLE IF EXISTS `operating_system`.`orders` ;
 
-CREATE TABLE IF NOT EXISTS `operating_system`.`order` (
-  `order_id` INT UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `operating_system`.`orders` (
+  `order_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `cost` FLOAT UNSIGNED NULL,
-  `date` DATE NOT NULL,
+  `order_date` DATE NOT NULL,
   PRIMARY KEY (`order_id`))
 ENGINE = InnoDB;
 
@@ -315,7 +315,7 @@ CREATE TABLE IF NOT EXISTS `operating_system`.`os_order_customer` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_os_order_customer_2`
     FOREIGN KEY (`order_id`)
-    REFERENCES `operating_system`.`order` (`order_id`)
+    REFERENCES `operating_system`.`orders` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
