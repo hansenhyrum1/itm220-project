@@ -1,5 +1,8 @@
 SET AUTOCOMMIT=0;
 
+USE operating_system;
+
+
 -- 1. kernel ------------------------------------------------------------------
 START TRANSACTION;
 
@@ -292,6 +295,7 @@ SAVEPOINT operating_system1;
 
 INSERT INTO operating_system
 (os_name, release_date, version, cost, required_specs_id, kernel_id, company_id)
+
 VALUES
 ("Windows 11 Pro", "2021-10-5", "24H2", "199.99", 
 	(SELECT required_specs_id FROM required_specs 
@@ -303,10 +307,11 @@ VALUES
 		AND min_storage_id = (SELECT min_storage_id FROM min_storage
 			WHERE storage_size = 64)
 		AND min_gpu_id = (SELECT min_gpu_id FROM min_gpu
-			WHERE vram_min = 1024) AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
-				WHERE gpu_architecture_type = "DirectX 12")),
-	(SELECT kernel_id FROM kernel WHERE kernel = "Windows NT Kernel"), 
+			WHERE vram_min = 1024 AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
+				WHERE gpu_architecture_type = "DirectX 12"))),
+	(SELECT kernel_id FROM kernel WHERE kernel_name = "Windows NT Kernel"), 
 	(SELECT company_id FROM company WHERE company_name = "Microsoft")),
+    
 ("Windows 10 Pro", "2015-7-29", "22H2", "99.99", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
@@ -317,38 +322,41 @@ VALUES
 		AND min_storage_id = (SELECT min_storage_id FROM min_storage
 			WHERE storage_size = 20)
 		AND min_gpu_id = (SELECT min_gpu_id FROM min_gpu
-			WHERE vram_min = 1024) AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
-				WHERE gpu_architecture_type = "DirectX 9")), 
-	(SELECT kernel_id FROM kernel WHERE kernel = "Windows NT Kernel"), 
+			WHERE vram_min = 1024 AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
+				WHERE gpu_architecture_type = "DirectX 9"))), 
+	(SELECT kernel_id FROM kernel WHERE kernel_name = "Windows NT Kernel"), 
 	(SELECT company_id FROM company WHERE company_name = "Microsoft")),
+    
 ("macOS Sonoma", "2023-9-26", "14.7.4", "0", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
 			WHERE num_cores = 8 AND speed = "3.2" AND architecture_id = (SELECT architecture_id FROM architecture 
-				WHERE architecture_type = "ARM64")) 
+				WHERE architecture_type = "ARM")) 
 		AND min_ram_id = (SELECT min_ram_id from min_ram 
 			WHERE ram_size = 4 AND ram_type = "LPDDR4/DDR4")
 		AND min_storage_id = (SELECT min_storage_id FROM min_storage
 			WHERE storage_size = 25)
 		AND min_gpu_id = (SELECT min_gpu_id FROM min_gpu
-			WHERE vram_min = 2048) AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
-				WHERE gpu_architecture_type = "Apple M2")), 
-    (SELECT kernel_id FROM kernel WHERE kernel = "XNU (Darwin Kernel)"), 
+			WHERE vram_min = 2048 AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
+				WHERE gpu_architecture_type = "Apple M2"))), 
+    (SELECT kernel_id FROM kernel WHERE kernel_name = "XNU (Darwin Kernel)"), 
     (SELECT company_id FROM company WHERE company_name = "Apple")),
+    
 ("macOS Ventura", "2022-10-24", "13.6.7", "0", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
 			WHERE num_cores = 8 AND speed = "3.2" AND architecture_id = (SELECT architecture_id FROM architecture 
-				WHERE architecture_type = 'ARM64'))
+				WHERE architecture_type = 'ARM'))
 		AND min_ram_id = (SELECT min_ram_id from min_ram 
 			WHERE ram_size = 4 AND ram_type = "LPDDR4/DDR4")
 		AND min_storage_id = (SELECT min_storage_id FROM min_storage
 			WHERE storage_size = 25)
 		AND min_gpu_id = (SELECT min_gpu_id FROM min_gpu
-			WHERE vram_min = 2048) AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
-				WHERE gpu_architecture_type = "Apple M2")), 
-    (SELECT kernel_id FROM kernel WHERE kernel = "XNU (Darwin Kernel)"), 
+			WHERE vram_min = 2048 AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
+				WHERE gpu_architecture_type = "Apple M2"))), 
+    (SELECT kernel_id FROM kernel WHERE kernel_name = "XNU (Darwin Kernel)"), 
     (SELECT company_id FROM company WHERE company_name = "Apple")),
+    
 ("Ubuntu", "2004-10-20", "24.10", "0", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
@@ -359,10 +367,11 @@ VALUES
 		AND min_storage_id = (SELECT min_storage_id FROM min_storage
 			WHERE storage_size = 25)
 		AND min_gpu_id = (SELECT min_gpu_id FROM min_gpu
-			WHERE vram_min = 256) AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
-				WHERE gpu_architecture_type = "3D acceleration-capable GPU")),
-    (SELECT kernel_id FROM kernel WHERE kernel = "Linux Kernel"),
+			WHERE vram_min = 256 AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
+				WHERE gpu_architecture_type = "3D acceleration-capable GPU"))),
+    (SELECT kernel_id FROM kernel WHERE kernel_name = "Linux Kernel"),
     (SELECT company_id FROM company WHERE company_name = "Canonical")),
+    
 ("ChromeOS", "2011-6-11", "132.0", "0", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
@@ -373,9 +382,9 @@ VALUES
 		AND min_storage_id = (SELECT min_storage_id FROM min_storage
 			WHERE storage_size = 16)
 		AND min_gpu_id = (SELECT min_gpu_id FROM min_gpu
-			WHERE vram_min = 128) AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
-				WHERE gpu_architecture_type = "2010 or Newer")),
-    (SELECT kernel_id FROM kernel WHERE kernel = "Linux Kernel"), 
+			WHERE vram_min = 128 AND gpu_architecture_id = (SELECT gpu_architecture_id FROM gpu_architecture
+				WHERE gpu_architecture_type = "2010 or Newer"))),
+    (SELECT kernel_id FROM kernel WHERE kernel_name = "Linux Kernel"), 
     (SELECT company_id FROM company WHERE company_name = "Google"));
 
 COMMIT;
@@ -400,11 +409,11 @@ VALUES
 (SELECT order_id FROM orders WHERE cost = '40'),
 (SELECT customer_id FROM customer WHERE first_name = 'Hyrum')),
 
-((SELECT os_id FROM operating_system WHERE os_name = 'Window 10 Pro'),
+((SELECT os_id FROM operating_system WHERE os_name = 'Windows 10 Pro'),
 (SELECT order_id FROM orders WHERE cost = '50'),
 (SELECT customer_id FROM customer WHERE first_name = 'Cashton')),
 
-((SELECT os_id FROM operating_system WHERE os_name = 'macOS Soroma'),
+((SELECT os_id FROM operating_system WHERE os_name = 'macOS Sonoma'),
 (SELECT order_id FROM orders WHERE cost = '10'),
 (SELECT customer_id FROM customer WHERE first_name = 'Zach')),
 
