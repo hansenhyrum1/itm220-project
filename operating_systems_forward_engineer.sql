@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS `operating_system`.`min_cpu` ;
 CREATE TABLE IF NOT EXISTS `operating_system`.`min_cpu` (
   `min_cpu_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `num_cores` INT NOT NULL,
-  `speed` FLOAT NOT NULL,
+  `speed` VARCHAR(3) NOT NULL,
   `architecture_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`min_cpu_id`),
   INDEX `fk_min_cpu_1_idx` (`architecture_id` ASC) VISIBLE,
@@ -79,7 +79,7 @@ DROP TABLE IF EXISTS `operating_system`.`min_storage` ;
 
 CREATE TABLE IF NOT EXISTS `operating_system`.`min_storage` (
   `min_storage_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `min_storage` VARCHAR(45) NOT NULL,
+  `storage_size` INT NOT NULL,
   PRIMARY KEY (`min_storage_id`))
 ENGINE = InnoDB;
 
@@ -91,21 +91,21 @@ DROP TABLE IF EXISTS `operating_system`.`gpu_architecture` ;
 
 CREATE TABLE IF NOT EXISTS `operating_system`.`gpu_architecture` (
   `gpu_architecture_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `gpu_architecture` VARCHAR(45) NOT NULL,
+  `gpu_architecture_type` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`gpu_architecture_id`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `operating_system`.`gpu`
+-- Table `operating_system`.`min_gpu`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `operating_system`.`gpu` ;
+DROP TABLE IF EXISTS `operating_system`.`min_gpu` ;
 
-CREATE TABLE IF NOT EXISTS `operating_system`.`gpu` (
-  `gpu_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `operating_system`.`min_gpu` (
+  `min_gpu_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `vram_min` INT NOT NULL,
   `gpu_architecture_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`gpu_id`),
+  PRIMARY KEY (`min_gpu_id`),
   INDEX `fk_gpu_1_idx` (`gpu_architecture_id` ASC) VISIBLE,
   CONSTRAINT `fk_gpu_1`
     FOREIGN KEY (`gpu_architecture_id`)
@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `operating_system`.`required_specs` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_required_specs_4`
     FOREIGN KEY (`min_gpu_id`)
-    REFERENCES `operating_system`.`gpu` (`gpu_id`)
+    REFERENCES `operating_system`.`min_gpu` (`min_gpu_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `operating_system`.`operating_system` (
   `os_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `os_name` VARCHAR(45) NOT NULL,
   `release_date` DATE NOT NULL,
-  `version` DATE NOT NULL,
+  `version` VARCHAR(45) NOT NULL,
   `cost` FLOAT NOT NULL,
   `required_specs_id` INT UNSIGNED NOT NULL,
   `kernel_id` INT UNSIGNED NOT NULL,
@@ -221,7 +221,7 @@ DROP TABLE IF EXISTS `operating_system`.`address` ;
 
 CREATE TABLE IF NOT EXISTS `operating_system`.`address` (
   `address_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `address` VARCHAR(45) NOT NULL,
+  `address` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`address_id`))
 ENGINE = InnoDB;
 
@@ -232,7 +232,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `operating_system`.`credit_card` ;
 
 CREATE TABLE IF NOT EXISTS `operating_system`.`credit_card` (
-  `credit_card_id` INT UNSIGNED NOT NULL,
+  `credit_card_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `card_number` VARCHAR(16) NOT NULL,
   `card_name` VARCHAR(45) NOT NULL,
   `card_type` VARCHAR(45) NOT NULL,
@@ -277,14 +277,14 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `operating_system`.`order`
+-- Table `operating_system`.`orders`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `operating_system`.`order` ;
+DROP TABLE IF EXISTS `operating_system`.`orders` ;
 
-CREATE TABLE IF NOT EXISTS `operating_system`.`order` (
-  `order_id` INT UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `operating_system`.`orders` (
+  `order_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `cost` FLOAT UNSIGNED NULL,
-  `date` DATE NOT NULL,
+  `order_date` DATE NOT NULL,
   PRIMARY KEY (`order_id`))
 ENGINE = InnoDB;
 
@@ -315,7 +315,7 @@ CREATE TABLE IF NOT EXISTS `operating_system`.`os_order_customer` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_os_order_customer_2`
     FOREIGN KEY (`order_id`)
-    REFERENCES `operating_system`.`order` (`order_id`)
+    REFERENCES `operating_system`.`orders` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

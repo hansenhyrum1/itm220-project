@@ -157,11 +157,11 @@ SAVEPOINT min_cpu1;
 INSERT INTO min_cpu
 (num_cores, speed, architecture_id)
 VALUES
-(2, 1.0, (SELECT architecture_id FROM architecture WHERE architecture_type = 'X86')), -- Windows 11 Pro
-(1, 1.0, (SELECT architecture_id FROM architecture WHERE architecture_type = 'x86')), -- Windows 10 Pro
-(8, 3.2, (SELECT architecture_id FROM architecture WHERE architecture_type = 'ARM')), -- Macs
-(2, 2.0, (SELECT architecture_id FROM architecture WHERE architecture_type = 'x86')), -- Ubuntu
-(2, 1.1, (SELECT architecture_id FROM architecture WHERE architecture_type = 'x86')); -- ChromeOS
+(2, "1", (SELECT architecture_id FROM architecture WHERE architecture_type = 'X86')), -- Windows 11 Pro
+(1, "1", (SELECT architecture_id FROM architecture WHERE architecture_type = 'x86')), -- Windows 10 Pro
+(8, "3.2", (SELECT architecture_id FROM architecture WHERE architecture_type = 'ARM')), -- Macs
+(2, "2", (SELECT architecture_id FROM architecture WHERE architecture_type = 'x86')), -- Ubuntu
+(2, "1.1", (SELECT architecture_id FROM architecture WHERE architecture_type = 'x86')); -- ChromeOS
 
 COMMIT;
 
@@ -175,8 +175,7 @@ INSERT INTO min_gpu
 VALUES
 (1024, (SELECT gpu_architecture_id FROM gpu_architecture WHERE gpu_architecture_type = 'DirectX 12')), -- Win11
 (1024, (SELECT gpu_architecture_id FROM gpu_architecture WHERE gpu_architecture_type = 'DirectX 9')), -- Win10
-(2048, (SELECT gpu_architecture_id FROM gpu_architecture WHERE gpu_architecture_type = 'Apple M2')), -- Mac Sonoma
-(2048, (SELECT gpu_architecture_id FROM gpu_architecture WHERE gpu_architecture_type = 'Apple M2')), -- Mac Ventura
+(2048, (SELECT gpu_architecture_id FROM gpu_architecture WHERE gpu_architecture_type = 'Apple M2')), -- Mac Sonoma and Ventura
 (256, (SELECT gpu_architecture_id FROM gpu_architecture WHERE gpu_architecture_type = '3D acceleration-capable GPU')), -- Ubuntu
 (128, (SELECT gpu_architecture_id FROM gpu_architecture WHERE gpu_architecture_type = '2010 or Newer')); -- ChromeOS
  
@@ -226,7 +225,7 @@ INSERT INTO required_specs
 VALUES
 -- Windows 11 Pro (Requires 2 Cores, 4GB DDR4, 64GB Storage, DirectX 12 GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 2 AND speed = 1.0 AND architecture_id = (SELECT architecture_id FROM architecture 
+	WHERE num_cores = 2 AND speed = "1" AND architecture_id = (SELECT architecture_id FROM architecture 
 		WHERE architecture_type = 'x86')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 4 AND ram_type = 'DDR4'),
@@ -238,7 +237,7 @@ VALUES
 
 -- Windows 10 Pro (Requires 1 Core, 2GB DDR3, 20GB Storage, DirectX 9 GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 1 AND speed = 1.0 AND architecture_id = (SELECT architecture_id FROM architecture 
+	WHERE num_cores = 1 AND speed = "1" AND architecture_id = (SELECT architecture_id FROM architecture 
 		WHERE architecture_type = 'x86')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 2 AND ram_type = 'DDR3'),
@@ -250,8 +249,8 @@ VALUES
 
 -- macOS Sonoma (Requires 8 Cores, 4GB LPDDR4, 25GB Storage, Apple M2 GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 8 AND speed = 3.2 AND architecture_id = (SELECT architecture_id FROM architecture 
-		WHERE architecture_type = 'ARM')),
+	WHERE num_cores = 8 AND speed = "3.2" AND architecture_id = (SELECT architecture_id FROM architecture 
+WHERE architecture_type = 'ARM')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 4 AND ram_type = 'LPDDR4/DDR4'),
  (SELECT min_storage_id FROM min_storage 
@@ -262,7 +261,7 @@ VALUES
 
 -- Ubuntu (Requires 2 Cores, 2GB DDR3, 25GB Storage, 3D Acceleration GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 2 AND speed = 2.0 AND architecture_id = (SELECT architecture_id FROM architecture 
+	WHERE num_cores = 2 AND speed = "2" AND architecture_id = (SELECT architecture_id FROM architecture 
 		WHERE architecture_type = 'x86')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 2 AND ram_type = 'DDR3'),
@@ -274,7 +273,7 @@ VALUES
 
 -- ChromeOS (Requires 2 Cores, 2GB LPDDR3, 16GB Storage, OpenGL 3.0 GPU)
 ((SELECT min_cpu_id FROM min_cpu 
-	WHERE num_cores = 2 AND speed = 1.1 AND architecture_id = (SELECT architecture_id FROM architecture 
+	WHERE num_cores = 2 AND speed = "1.1" AND architecture_id = (SELECT architecture_id FROM architecture 
 		WHERE architecture_type = 'x86')),
  (SELECT min_ram_id FROM min_ram 
 	WHERE ram_size = 2 AND ram_type = 'LPDDR3/DDR3'),
@@ -297,7 +296,7 @@ VALUES
 ("Windows 11 Pro", "2021-10-5", "24H2", "199.99", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
-			WHERE num_cores = 2 AND speed = 1.0 AND architecture = (SELECT architecture_id FROM architecture 
+			WHERE num_cores = 2 AND speed = "1" AND architecture_id = (SELECT architecture_id FROM architecture 
 				WHERE architecture_type = "x86")) 
 		AND min_ram_id = (SELECT min_ram_id from min_ram 
 			WHERE ram_size = 4 AND ram_type = "DDR4")
@@ -311,7 +310,7 @@ VALUES
 ("Windows 10 Pro", "2015-7-29", "22H2", "99.99", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
-			WHERE num_cores = 1 AND speed = 1.0 AND architecture = (SELECT architecture_id FROM architecture 
+			WHERE num_cores = 1 AND speed = "1" AND architecture_id = (SELECT architecture_id FROM architecture 
 				WHERE architecture_type = "x86")) 
 		AND min_ram_id = (SELECT min_ram_id from min_ram 
 			WHERE ram_size = 2 AND ram_type = "DDR3")
@@ -325,7 +324,7 @@ VALUES
 ("macOS Sonoma", "2023-9-26", "14.7.4", "0", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
-			WHERE num_cores = 8 AND speed = 3.2 AND architecture = (SELECT architecture_id FROM architecture 
+			WHERE num_cores = 8 AND speed = "3.2" AND architecture_id = (SELECT architecture_id FROM architecture 
 				WHERE architecture_type = "ARM64")) 
 		AND min_ram_id = (SELECT min_ram_id from min_ram 
 			WHERE ram_size = 4 AND ram_type = "LPDDR4/DDR4")
@@ -339,7 +338,7 @@ VALUES
 ("macOS Ventura", "2022-10-24", "13.6.7", "0", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
-			WHERE num_cores = 8 AND speed = 3.2 AND architecture = (SELECT architecture_id FROM architecture 
+			WHERE num_cores = 8 AND speed = "3.2" AND architecture_id = (SELECT architecture_id FROM architecture 
 				WHERE architecture_type = 'ARM64'))
 		AND min_ram_id = (SELECT min_ram_id from min_ram 
 			WHERE ram_size = 4 AND ram_type = "LPDDR4/DDR4")
@@ -353,7 +352,7 @@ VALUES
 ("Ubuntu", "2004-10-20", "24.10", "0", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
-			WHERE num_cores = 2 AND speed = 2.0 AND architecture = (SELECT architecture_id FROM architecture 
+			WHERE num_cores = 2 AND speed = "2" AND architecture_id = (SELECT architecture_id FROM architecture 
 				WHERE architecture_type = "x86")) 
 		AND min_ram_id = (SELECT min_ram_id from min_ram 
 			WHERE ram_size = 2 AND ram_type = "DDR3")
@@ -367,7 +366,7 @@ VALUES
 ("ChromeOS", "2011-6-11", "132.0", "0", 
 	(SELECT required_specs_id FROM required_specs 
 		WHERE min_cpu_id = (SELECT min_cpu_id FROM min_cpu 
-			WHERE num_cores = 2 AND speed = 1.1 AND architecture = (SELECT architecture_id FROM architecture 
+			WHERE num_cores = 2 AND speed = "1.1" AND architecture_id = (SELECT architecture_id FROM architecture 
 				WHERE architecture_type = "x86")) 
 		AND min_ram_id = (SELECT min_ram_id from min_ram 
 			WHERE ram_size = 2 AND ram_type = "LPDDR3/DDR3")
