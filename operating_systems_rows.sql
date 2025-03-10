@@ -2,7 +2,7 @@ SET AUTOCOMMIT=0;
 
 USE operating_system;
 
-
+-- Andrew Benge
 -- 1. kernel ------------------------------------------------------------------
 START TRANSACTION;
 
@@ -20,7 +20,7 @@ VALUES
 
 COMMIT;
 
-
+-- Andrew Benge
 -- -------------------------------------------
 -- THIS IS FOR THE ARCHITECTURE TABLE.
 -- https://www.windriver.com/solutions/learning/leading-processor-architectures
@@ -40,6 +40,7 @@ VALUES
 
 COMMIT;
 
+-- Cashton Bone
 -- 3. min_ram----------------------------------------------------------------------------------
 START TRANSACTION;
 
@@ -55,6 +56,7 @@ VALUES
 
 COMMIT;
 
+-- Aaron Quick
 -- 4. min_storage ------------------------------------------------------------------------------
 START TRANSACTION;
 
@@ -70,6 +72,7 @@ VALUES
 
 COMMIT;	
 
+-- Cashton Bone
 -- 5. gpu_architecture-------------------------------------------------------------------
 START TRANSACTION;
 
@@ -86,6 +89,7 @@ VALUES
 
 COMMIT;
 
+-- Zach Pinney
 -- 6. zip code ------------------------------------------------------
 START TRANSACTION;
 
@@ -103,6 +107,7 @@ VALUES
 
 COMMIT;
 
+-- Zach Pinney
 -- 7. address --------------------------------------------------------------
 START TRANSACTION;
 
@@ -120,6 +125,7 @@ VALUES
 
 COMMIT;
 
+-- Tam Tran
 -- 8. order ------------------------------------------------------------------
 START TRANSACTION;
 
@@ -137,6 +143,7 @@ VALUES
 
 COMMIT;
 
+-- Hyrum Hansen
 -- 9. company -----------------------------------------------------------------
 START TRANSACTION;
 
@@ -152,6 +159,7 @@ VALUES
 
 COMMIT;
 
+-- Andrew Benge
 -- 10. min_cpu --------------------------------------------------------------------------------
 START TRANSACTION;
 
@@ -168,6 +176,7 @@ VALUES
 
 COMMIT;
 
+-- Cashton Bone
 -- 11. min_gpu -------------------------------------------------------------
 START TRANSACTION;
 
@@ -184,6 +193,7 @@ VALUES
  
 COMMIT;
 
+-- Zach Pinney
 -- 12. credit_card ---------------------------------------------------------
 START TRANSACTION;
 
@@ -201,6 +211,7 @@ VALUES
 
 COMMIT;
 
+-- Tam Tran
 -- 13. customer--------------------------------------------------------------
 START TRANSACTION;
 
@@ -218,6 +229,7 @@ VALUES
 
 COMMIT;
 
+-- Hyrum Hansen
 -- 14. required_specs -------------------------------------------------------------------------------------------------------
 START TRANSACTION;
 
@@ -288,6 +300,7 @@ WHERE architecture_type = 'ARM')),
 
 COMMIT;
 
+-- Hyrum Hansen
 -- 15. operating_system ----------------------------------------------------------------------------
 START TRANSACTION;
 
@@ -389,6 +402,7 @@ VALUES
 
 COMMIT;
 
+-- Tam Tran
 -- 16. os_order_customer ------------------------------------------------------------------
 START TRANSACTION;
 
