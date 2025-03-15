@@ -191,7 +191,16 @@ VALUES
 (40, "2023-04-24"),
 (50, "2024-05-10"),
 (10, "2024-05-14"),
-(14.5, "2024-08-12");
+(14.5, "2024-08-12"),
+(60, '2024-09-15'),
+(35, '2024-10-01'),
+(22.75, '2024-11-20'),
+(100, '2024-12-05'),
+(75, '2025-01-10'),
+(55, '2025-02-15'),
+(45, '2025-03-20'),
+(80, '2025-04-05'),
+(65, '2025-05-12');
 
 COMMIT;
 
@@ -298,7 +307,7 @@ VALUES
 
 COMMIT;
 
--- Zach Pinney
+-- Zach Pinney & Tam Tran
 -- 13. customer--------------------------------------------------------------
 START TRANSACTION;
 
@@ -313,15 +322,15 @@ VALUES
 ('Cashton', 'Bone', (SELECT credit_card_id FROM credit_card WHERE card_number = '4524031122347685')),
 ('Zach', 'Pinney', (SELECT credit_card_id FROM credit_card WHERE card_number = '4578443310293853')),
 ('Aaron', 'Quick', (SELECT credit_card_id FROM credit_card WHERE card_number = '1358269895312840')),
-('John', 'Smith', (SELECT credit_card_id FROM credit_card WHERE card_number = '5123456789012345')),
-('Alice', 'Johnson', (SELECT credit_card_id FROM credit_card WHERE card_number = '4539123456789012')),
-('Michael', 'Brown', (SELECT credit_card_id FROM credit_card WHERE card_number = '6011123456789012')),
-('Sarah', 'Green', (SELECT credit_card_id FROM credit_card WHERE card_number = '371234567890123')),
-('David', 'White', (SELECT credit_card_id FROM credit_card WHERE card_number = '5489123456789012')),
-('Laura', 'Martinez', (SELECT credit_card_id FROM credit_card WHERE card_number = '371234567890124')),
-('Kevin', 'Harris', (SELECT credit_card_id FROM credit_card WHERE card_number = '6011123456789013')),
-('Emily', 'Davis', (SELECT credit_card_id FROM credit_card WHERE card_number = '4539123456789013')),
-('Chris', 'Wilson', (SELECT credit_card_id FROM credit_card WHERE card_number = '5123456789012346')),
+('Liam', 'Smith', (SELECT credit_card_id FROM credit_card WHERE card_number = '5123456789012345')),
+('Emma', 'Johnson', (SELECT credit_card_id FROM credit_card WHERE card_number = '4539123456789012')),
+('Olivia', 'Brown', (SELECT credit_card_id FROM credit_card WHERE card_number = '6011123456789012')),
+('Noah', 'Davis', (SELECT credit_card_id FROM credit_card WHERE card_number = '371234567890123')),
+('Sophia', 'Martinez', (SELECT credit_card_id FROM credit_card WHERE card_number = '5489123456789012')),
+('Mason', 'Wilson', (SELECT credit_card_id FROM credit_card WHERE card_number = '371234567890124')),
+('Ethan', 'Anderson', (SELECT credit_card_id FROM credit_card WHERE card_number = '6011123456789013')),
+('Ava', 'Thomas', (SELECT credit_card_id FROM credit_card WHERE card_number = '4539123456789013')),
+('Isabella', 'Taylor', (SELECT credit_card_id FROM credit_card WHERE card_number = '5123456789012346')),
 ('Rachel', 'Taylor', (SELECT credit_card_id FROM credit_card WHERE card_number = '6011123456789014'));
 
 COMMIT;
@@ -779,29 +788,81 @@ SAVEPOINT os_order_customer1;
 INSERT INTO os_order_customer
 (os_id, order_id, customer_id)
 VALUES
-((SELECT os_id FROM operating_system WHERE os_name = 'Windows 11 Pro'), 
-(SELECT order_id FROM orders WHERE cost = '25.5'), 
+
+-- ((SELECT os_id FROM operating_system WHERE os_name = 'Windows 11 Pro'), 
+-- (SELECT order_id FROM orders WHERE cost = '25.5'), 
+-- (SELECT customer_id FROM customer WHERE first_name = 'Tam')),
+
+-- ((SELECT os_id FROM operating_system WHERE os_name = 'Ubuntu'),
+-- (SELECT order_id FROM orders WHERE cost = '30'),
+-- (SELECT customer_id FROM customer WHERE first_name = 'Andrew')),
+
+-- ((SELECT os_id FROM operating_system WHERE os_name = 'macOS Ventura'),
+-- (SELECT order_id FROM orders WHERE cost = '40'),
+-- (SELECT customer_id FROM customer WHERE first_name = 'Hyrum')),
+
+-- ((SELECT os_id FROM operating_system WHERE os_name = 'Windows 10 Pro'),
+-- (SELECT order_id FROM orders WHERE cost = '50'),
+-- (SELECT customer_id FROM customer WHERE first_name = 'Cashton')),
+
+-- ((SELECT os_id FROM operating_system WHERE os_name = 'macOS Sonoma'),
+-- (SELECT order_id FROM orders WHERE cost = '10'),
+-- (SELECT customer_id FROM customer WHERE first_name = 'Zach')),
+
+-- ((SELECT os_id FROM operating_system WHERE os_name = 'ChromeOS'),
+-- (SELECT order_id FROM orders WHERE cost = '14.5'),
+-- (SELECT customer_id FROM customer WHERE first_name = 'Aaron'));
+
+-- the screw ups begin
+
+
+((SELECT os_id FROM operating_system WHERE os_name = 'Windows 11 Pro'),
+(SELECT order_id FROM orders WHERE cost = 25.5),
 (SELECT customer_id FROM customer WHERE first_name = 'Tam')),
 
-((SELECT os_id FROM operating_system WHERE os_name = 'Ubuntu'),
-(SELECT order_id FROM orders WHERE cost = '30'),
+((SELECT os_id FROM operating_system WHERE os_name = 'ChromeOS'),
+(SELECT order_id FROM orders WHERE cost = 30),
 (SELECT customer_id FROM customer WHERE first_name = 'Andrew')),
 
-((SELECT os_id FROM operating_system WHERE os_name = 'macOS Ventura'),
-(SELECT order_id FROM orders WHERE cost = '40'),
+((SELECT os_id FROM operating_system WHERE os_name = 'Windows 10 Pro'),
+(SELECT order_id FROM orders WHERE cost = 40),
 (SELECT customer_id FROM customer WHERE first_name = 'Hyrum')),
 
-((SELECT os_id FROM operating_system WHERE os_name = 'Windows 10 Pro'),
-(SELECT order_id FROM orders WHERE cost = '50'),
+((SELECT os_id FROM operating_system WHERE os_name = 'Ubuntu'),
+(SELECT order_id FROM orders WHERE cost = 50),
 (SELECT customer_id FROM customer WHERE first_name = 'Cashton')),
 
-((SELECT os_id FROM operating_system WHERE os_name = 'macOS Sonoma'),
-(SELECT order_id FROM orders WHERE cost = '10'),
+((SELECT os_id FROM operating_system WHERE os_name = 'Windows Server 2022 Standard'),
+(SELECT order_id FROM orders WHERE cost = 10),
 (SELECT customer_id FROM customer WHERE first_name = 'Zach')),
 
-((SELECT os_id FROM operating_system WHERE os_name = 'ChromeOS'),
-(SELECT order_id FROM orders WHERE cost = '14.5'),
-(SELECT customer_id FROM customer WHERE first_name = 'Aaron'));
+((SELECT os_id FROM operating_system WHERE os_name = 'Fuschia F23'),
+(SELECT order_id FROM orders WHERE cost = 14.5),
+(SELECT customer_id FROM customer WHERE first_name = 'Aaron')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'IBM i 7.5'),
+(SELECT order_id FROM orders WHERE cost = 60),
+(SELECT customer_id FROM customer WHERE first_name = 'Liam')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'Windows XP Pro'),
+(SELECT order_id FROM orders WHERE cost = 35),
+(SELECT customer_id FROM customer WHERE first_name = 'Emma')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'Red Star'),
+(SELECT order_id FROM orders WHERE cost = 22.75),
+(SELECT customer_id FROM customer WHERE first_name = 'Olivia')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'Oracle Solaris'),
+(SELECT order_id FROM orders WHERE cost = 100),
+(SELECT customer_id FROM customer WHERE first_name = 'Noah')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'Raspberry Pi OS'),
+(SELECT order_id FROM orders WHERE cost = 75),
+(SELECT customer_id FROM customer WHERE first_name = 'Sophia')),
+
+((SELECT os_id FROM operating_system WHERE os_name = 'Kali Linux'),
+(SELECT order_id FROM orders WHERE cost = 55),
+(SELECT customer_id FROM customer WHERE first_name = 'Mason'));
 
 COMMIT;
 
